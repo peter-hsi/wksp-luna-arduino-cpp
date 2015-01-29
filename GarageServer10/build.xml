@@ -1,0 +1,148 @@
+<!--
+TODO: fix hardcoded file lists
+-->
+<project name="GarageServer" default="dist" basedir=".">
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" />
+    <!-- Testing cpptasks <taskdef resource="cpptasks.tasks"/> -->
+    <property file="${ant.project.name}.properties" />
+
+    <!-- set global properties for this build -->
+    <property name="dir.arduino.home" location="C:/arduino-1.0.5-r2" />
+    <property name="dir.src"          location="src" />
+    <property name="dir.lib"          location="lib" />
+    <property name="dir.arduinolib"   location="${basedir}/../Arduinolib" />
+    <property name="dir.build"        location="build" />
+    <property name="dir.dist"         location="dist" />
+
+    <!-- TODO: remove hardcode -->
+    <property name="srclist.cpp"      value="GarageServer.cpp Relay.cpp" />
+
+
+
+    <target name="init" depends="clean">
+        <tstamp />
+        <mkdir dir="${dir.build}" />
+    </target>
+
+<!--  Testing cpptasks
+    <target name="compilecpp">
+        <cc outtype="executable" subsystem="console" outfile="${dir.build}/hello" objdir="${dir.build}">
+           <fileset dir="${dir.src}" includes="*.c"/>
+        </cc>
+    </target>
+-->
+
+    <property name="avrgcc"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
+    <property name="avrgpp"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-g++.exe" />
+    <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
+    <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
+
+    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
+    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
+    <property name="inc3"             location="${dir.arduino.home}/hardware/arduino/libraries/SPI" />
+    <property name="inc4"             location="${dir.arduinolib}/UIPEthernet/src" />
+    <property name="inc5"             location="${inc4}/utility" />
+    <property name="inc6"             location="${dir.arduinolib}/TextFinder/src" />
+    <property name="includes"         value="-I${inc1} -I${inc2} -I${inc3} -I${inc4} -I${inc5} -I${inc6}" />
+
+    <target name="compile" depends="init" description="compile the source ">
+
+        <for list="${srclist.cpp}" param="srcfile"  delimiter=" ">
+            <sequential>
+                <echo message="compiling =@{srcfile}=   ${avrgpp} ${gppswitches}  ${includes}  ${dir.src}/@{srcfile}  -o ${dir.src}/@{srcfile}.o" />
+                <exec executable="cmd">
+                    <arg value="/c ${avrgpp} ${gppswitches}  ${includes}  ${dir.src}/@{srcfile}  -o ${dir.src}/@{srcfile}.o" />
+                </exec>
+            </sequential>
+        </for>
+    </target>
+
+
+    <property name="avrgcc"       location= "${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
+    <property name="linkswitches" value=    "-Os -Wl,--gc-sections -mmcu=atmega328p" />
+    <property name="core.ar"      location= "../libDuemilanoveCore10.a" />
+    <property name="ard.lib.ar"   location= "${dir.arduinolib}/UIPEthernet.a" />
+    <property name="ard.lib.ar2"  location= "${dir.arduinolib}/TextFinder.a" />
+    <property name="obj"          location= "${dir.src}/${ant.project.name}.cpp.o" />
+    <property name="libaries"     value=    "-L${dir.arduinolib} -lm" />
+    <property name="elf"          location= "${dir.build}/${ant.project.name}.cpp.elf" />
+
+    <property name="avrsize" location="${dir.arduino.home}/hardware/tools/avr/bin/avr-size.exe" />
+    <property name="avrsizeoptions" value="--format=avr --mcu=atmega328p" />
+
+    <target name="link" depends="compile" description="create ELF from .o's and .a's ">
+        <echo message="Linking=     ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar} ${ard.lib.ar2} ${core.ar} ${libaries}" />
+        <exec executable="cmd">
+            <arg value="/c ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar} ${ard.lib.ar2} ${core.ar} ${libaries}" />
+        </exec>
+
+        <echo message="Sizing=     ${avrsize} ${avrsizeoptions} ${elf}" />
+        <exec executable="cmd">
+            <arg value="/c ${avrsize} ${avrsizeoptions} ${elf}" />
+        </exec>
+    </target>
+
+
+    <property name="avrobjcopy"   location= "${dir.arduino.home}/hardware/tools/avr/bin/avr-objcopy.exe" />
+    <property name="eppswitches"  value=    "-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0" />
+    <property name="hexswitches"  value=    "-O ihex -R .eeprom" />
+
+    <property name="eppfile"  location= "${dir.dist}/${ant.project.name}.cpp.eep" />
+    <property name="hex"      location= "${dir.dist}/${ant.project.name}.cpp.hex" />
+
+    <target name="dist" depends="link" description="create EPP and HEX files">
+        <mkdir dir="${dir.dist}" />
+
+        <!-- create EPP -->
+        <echo message="Creating EPP=     ${avrobjcopy} ${eppswitches} ${elf}  ${eppfile}" />
+        <exec executable="cmd">
+            <arg value="/c ${avrobjcopy} -v  ${eppswitches}  ${elf}  ${eppfile}" />
+        </exec>
+
+        <!-- create HEX -->
+        <echo message="Creating HEX=     ${avrobjcopy} ${hexswitches}  ${elf}  ${hex}" />
+        <exec executable="cmd">
+            <arg value="/c ${avrobjcopy} -v ${hexswitches}  ${elf}  ${hex}" />
+        </exec>
+    </target>
+
+
+
+    <property name="avrdude"          location= "${dir.arduino.home}/hardware/tools/avr/bin/avrdude.exe" />
+    <property name="avrdudeconf"      location= "${dir.arduino.home}/hardware/tools/avr/etc/avrdude.conf " />
+    <property name="comport"          value=    "-PCOM6 -b57600" />
+    <property name="avrdudeswitches"  value=    "-C${avrdudeconf} -v -v -v -v -patmega328p -carduino ${comport} -D -Uflash:w:${hex}:i" />
+
+    <target name="upload"  description="AVR upload to device">
+        <echo message="${avrdude}  ${avrdudeswitches}" />
+        <exec executable="cmd">
+            <arg value="/c  ${avrdude}  ${avrdudeswitches}" />
+        </exec>
+    </target>
+
+
+
+
+    <target name="clean" description="clean up">
+        <delete includeemptydirs="true" failonerror="false">
+            <fileset dir="${dir.src}" includes="**/*.o"/>
+            <fileset dir="${dir.src}" includes="**/*.d"/>
+            <fileset dir="${dir.lib}" includes="**/*.o"/>
+            <fileset dir="${dir.lib}" includes="**/*.d"/>
+            <fileset dir="${dir.build}" includes="**/*"/>
+            <fileset dir="${dir.dist}" includes="**/*"/>
+        </delete>
+    </target>
+
+
+    <target name="clean-all" depends="clean" description="clean up">
+        <delete file="${lib.a}" failonerror="false" />
+        <delete dir="${dir.build}" />
+        <delete dir="${dir.dist}" />
+    </target>
+
+
+    <echoproperties />
+
+</project>
