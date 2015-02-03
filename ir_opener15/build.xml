@@ -8,7 +8,7 @@ TODO:    add AVR tools Ant task (avr-gcc.exe, avr-gpp.exe, avrdude.exe, etc)
     <property file="${ant.project.name}.properties" />
 
     <!-- set global properties for this build -->
-    <property name="dir.arduino.home" location="C:/arduino-1.5.8" />
+    <property name="dir.arduino.home" location="C:/arduino-1.0.6" />
     <property name="dir.src"          location="src" />
     <property name="dir.lib"          location="lib" />
     <property name="dir.arduinolib"   location="${basedir}/../Arduinolib" />

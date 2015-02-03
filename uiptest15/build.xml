@@ -1,14 +1,14 @@
 <!--
 TODO: fix hardcoded file lists
 -->
-<project name="GarageServer" default="dist" basedir=".">
+<project name="uiptest15" default="dist" basedir=".">
 
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
     <!-- Testing cpptasks <taskdef resource="cpptasks.tasks"/> -->
-    <property file="${ant.project.name}.properties" />
+    <!-- <property file="${ant.project.name}.properties" /> -->
 
     <!-- set global properties for this build -->
-    <property name="dir.arduino.home" location="C:/arduino-1.0.6" />
+    <property name="dir.arduino.home" location="C:/arduino-1.5.8" />
     <property name="dir.src"          location="src" />
     <property name="dir.lib"          location="lib" />
     <property name="dir.arduinolib"   location="${basedir}/../Arduinolib" />
@@ -16,7 +16,7 @@ TODO: fix hardcoded file lists
     <property name="dir.dist"         location="dist" />
 
     <!-- TODO: remove hardcode -->
-    <property name="srclist.cpp"      value="GarageServer.cpp Relay.cpp" />
+    <property name="srclist.cpp"      value="uiptest15.cpp" />
 
 
 
@@ -38,13 +38,11 @@ TODO: fix hardcoded file lists
     <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
     <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
 
-    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
-    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
-    <property name="inc3"             location="${dir.arduino.home}/hardware/arduino/libraries/SPI" />
-    <property name="inc4"             location="${dir.arduinolib}/UIPEthernet/src" />
-    <property name="inc5"             location="${inc4}/utility" />
-    <property name="inc6"             location="${dir.arduinolib}/TextFinder/src" />
-    <property name="includes"         value="-I${inc1} -I${inc2} -I${inc3} -I${inc4} -I${inc5} -I${inc6}" />
+    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/avr/cores/arduino" />
+    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/avr/variants/standard" />
+    <property name="inc3"             location="${dir.arduinolib}/UIPEthernet/src" />
+    <property name="inc4"             location="${inc3}/utility" />
+    <property name="includes"         value="-I${inc1} -I${inc2} -I${inc3} -I${inc4}" />
 
     <target name="compile" depends="init" description="compile the source ">
 
@@ -61,9 +59,8 @@ TODO: fix hardcoded file lists
 
     <property name="avrgcc"       location= "${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="linkswitches" value=    "-Os -Wl,--gc-sections -mmcu=atmega328p" />
-    <property name="core.ar"      location= "../libDuemilanoveCore10.a" />
+    <property name="core.ar"      location= "C:/Users/peter/wksp-cpp-luna/libDuemilanoveCore.a" />
     <property name="ard.lib.ar"   location= "${dir.arduinolib}/UIPEthernet.a" />
-    <property name="ard.lib.ar2"  location= "${dir.arduinolib}/TextFinder.a" />
     <property name="obj"          location= "${dir.src}/${ant.project.name}.cpp.o" />
     <property name="libaries"     value=    "-L${dir.arduinolib} -lm" />
     <property name="elf"          location= "${dir.build}/${ant.project.name}.cpp.elf" />
@@ -72,9 +69,9 @@ TODO: fix hardcoded file lists
     <property name="avrsizeoptions" value="--format=avr --mcu=atmega328p" />
 
     <target name="link" depends="compile" description="create ELF from .o's and .a's ">
-        <echo message="Linking=     ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar} ${ard.lib.ar2} ${core.ar} ${libaries}" />
+        <echo message="Linking=     ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar} ${core.ar} ${libaries}" />
         <exec executable="cmd">
-            <arg value="/c ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar} ${ard.lib.ar2} ${core.ar} ${libaries}" />
+            <arg value="/c ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar} ${core.ar} ${libaries}" />
         </exec>
 
         <echo message="Sizing=     ${avrsize} ${avrsizeoptions} ${elf}" />
@@ -112,7 +109,7 @@ TODO: fix hardcoded file lists
     <property name="avrdude"          location= "${dir.arduino.home}/hardware/tools/avr/bin/avrdude.exe" />
     <property name="avrdudeconf"      location= "${dir.arduino.home}/hardware/tools/avr/etc/avrdude.conf " />
     <property name="comport"          value=    "-PCOM6 -b57600" />
-    <property name="avrdudeswitches"  value=    "-C${avrdudeconf} -v -v -v -v -patmega328p -carduino ${comport} -D -Uflash:w:${hex}:i" />
+    <property name="avrdudeswitches"  value=    "-C${avrdudeconf} -v -v -v -v -patmega328p -carduino ${comport} -D   -Uflash:w:${hex}:i" />
 
     <target name="upload"  description="AVR upload to device">
         <echo message="${avrdude}  ${avrdudeswitches}" />

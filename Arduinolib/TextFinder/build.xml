@@ -10,7 +10,7 @@ TODO: fix hardcoded file lists
 
     <!-- set global properties for this build -->
 
-    <property name="dir.arduino.home" location="C:/arduino-1.0.5-r2" />
+    <property name="dir.arduino.home" location="C:/arduino-1.0.6" />
     <property name="dir.src"        location="src" />
     <property name="dir.arduinolib" location= "${basedir}/.." />
 
