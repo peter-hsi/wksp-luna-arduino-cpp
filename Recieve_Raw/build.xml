@@ -100,15 +100,17 @@ TODO: fix hardcoded file lists
 
 
 
-    <property name="avrdude"          location= "${dir.arduino.home}/hardware/tools/avr/bin/avrdude.exe" />
-    <property name="avrdudeconf"      location= "${dir.arduino.home}/hardware/tools/avr/etc/avrdude.conf " />
-    <property name="comport"          value=    "-PCOM6 -b57600" />
-    <property name="avrdudeswitches"  value=    "-C${avrdudeconf} -v -v -v -v -patmega328p -carduino ${comport} -D -Uflash:w:${hex}:i" />
+    <property name="avr.dude"          location= "${dir.arduino.home}/hardware/tools/avr/bin/avrdude.exe" />
+    <property name="avr.dudeconf"      value=    "-C${dir.arduino.home}/hardware/tools/avr/etc/avrdude.conf " />
+    <property name="avr.comport"       value=    "-PCOM3 -b57600" />
+    <property name="avr.partno"        value=    "-patmega328p" />
+    <property name="avr.programmer"    value=    "-carduino" />
+    <property name="avr.dudeswitches"  value=    "${avr.dudeconf} -v -v -v -v ${avr.partno} ${avr.programmer} ${avr.comport} -D -Uflash:w:${hex}:i" />
 
     <target name="upload"  description="AVR upload to device">
-        <echo message="${avrdude}  ${avrdudeswitches}" />
+        <echo message="${avr.dude}  ${avr.dudeswitches}" />
         <exec executable="cmd">
-            <arg value="/c  ${avrdude}  ${avrdudeswitches}" />
+            <arg value="/c  ${avr.dude}  ${avr.dudeswitches}" />
         </exec>
     </target>
 

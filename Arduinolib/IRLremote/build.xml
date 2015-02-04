@@ -9,9 +9,10 @@ TODO: fix hardcoded file lists
 
     <!-- set global properties for this build -->
 
-    <property name="dir.arduino.home" location="C:/arduino-1.0.6" />
-    <property name="dir.src"        location="src" />
-    <property name="dir.arduinolib" location= "${basedir}/.." />
+    <property name="dir.arduino.home"     location="C:/arduino-1.0.6" />
+    <property name="dir.src"              location="src" />
+    <property name="dir.arduinolib"       location= "${basedir}/../rel/lib" />
+    <property name="dir.arduinoinclude"   location= "${basedir}/../rel/include" />
 
     <!-- TODO: remove hardcode -->
     <property name="list.ardlib.c"    value="" />
@@ -22,6 +23,8 @@ TODO: fix hardcoded file lists
 
     <target name="init" depends="clean">
         <tstamp />
+        <mkdir dir="${dir.arduinolib}" />
+        <mkdir dir="${dir.arduinoinclude}" />
     </target>
 
 
@@ -101,7 +104,7 @@ TODO: fix hardcoded file lists
         <delete includeemptydirs="true" failonerror="false">
             <fileset dir="${dir.src}" includes="**/*.o"/>
             <fileset dir="${dir.src}" includes="**/*.d"/>
-            <fileset dir="${dir.src}" includes="**/*.a"/>
+            <fileset dir="${basedir}" includes="**/${lib.a}"/>
         </delete>
     </target>
 

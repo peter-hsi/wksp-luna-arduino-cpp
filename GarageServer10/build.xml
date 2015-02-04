@@ -1,7 +1,7 @@
 <!--
 TODO: fix hardcoded file lists
 -->
-<project name="GarageServer" default="dist" basedir=".">
+<project name="Receive_Raw" default="dist" basedir=".">
 
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
     <!-- Testing cpptasks <taskdef resource="cpptasks.tasks"/> -->
@@ -16,7 +16,7 @@ TODO: fix hardcoded file lists
     <property name="dir.dist"         location="dist" />
 
     <!-- TODO: remove hardcode -->
-    <property name="srclist.cpp"      value="GarageServer.cpp Relay.cpp" />
+    <property name="srclist.cpp"      value="Receive_Raw.cpp Relay.cpp" />
 
 
 

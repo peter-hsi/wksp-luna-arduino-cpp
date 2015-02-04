@@ -6,9 +6,7 @@
 
     <!-- set global properties for this build -->
 
-    <property name="dir.arduino.home" location="C:/arduino-1.0.6" />
-    <property name="dir.src"        location="src" />
-    <property name="dir.arduinolib" location= "${basedir}/.." />
+    <property name="dir.arduino.home" location  ="C:/arduino-1.0.6" />
 
     <property name="avrgcc"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="avrgpp"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-g++.exe" />
@@ -17,28 +15,22 @@
 
     <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
     <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
-    <property name="inc3"             location="${dir.src}" />
-    <property name="inc4"             location="${dir.src}/utility" />
-    <property name="includes"         value="-I${inc1} -I${inc2} -I${inc3} -I${inc4}" />
+    <property name="inc3"             location="${dir.arduino.home}/hardware/tools/avr/avr/include" />
+    <property name="include.core"     value   ="-I${inc1} -I${inc2} -I${inc3}" />
 
     <property name="avr-ar"       location= "${dir.arduino.home}/hardware/tools/avr/bin/avr-ar.exe" />
     <property name="ar-switches"  value=    "rcs" />
 
-    <property name="objlist"      value=    "${dir.src}/EEPROM.cpp.o" />
-    <property name="lib.a"        location= "${dir.arduinolib}/${ant.project.name}.a" />
-    <property name="obj"          value=    "${basedir}/${ant.project.name}.cpp.o  ${objlist}  ${lib.a}" />
 
 
-
-
+    
 
     <target name="init" depends="clean">
         <tstamp />
     </target>
 
 
-
-    <property name="lib.list"  value="IRremote TextFinder UIPEthernet EEPROM" />
+    <property name="lib.list"  value="IRLremote TextFinder UIPEthernet EEPROM" />
 
     <target name="all" depends="init">
         <for list="${lib.list}"  param="lsrc" delimiter=" ">
@@ -46,22 +38,18 @@
                 <echo message="Building @{lsrc}..."/>
                 <!-- -->
             </sequential>
-        </for>        
+        </for>
     </target>
 
 
 
     <target name="clean" description="clean up">
-        <delete includeemptydirs="true" failonerror="false">
-            <fileset dir="${dir.src}" includes="**/*.o"/>
-            <fileset dir="${dir.src}" includes="**/*.d"/>
-            <fileset dir="${dir.src}" includes="**/*.a"/>
-        </delete>
+        <echo message="clean   project=${ant.project.name}" />
     </target>
 
 
     <target name="clean-all" depends="clean" description="clean up">
-        <delete file="${lib.a}" failonerror="false" />
+        <echo message="clean-all   project=${ant.project.name}" />
     </target>
 
 
