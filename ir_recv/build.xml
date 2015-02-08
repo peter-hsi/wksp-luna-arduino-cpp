@@ -1,13 +1,13 @@
 <!--
 TODO: fix hardcoded filelists
 -->
-<project name="ir_recv15" default="dist" basedir=".">
+<project name="ir_recv" default="dist" basedir=".">
 
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
     <property file="${ant.project.name}.properties" />
 
     <!-- set global properties for this build -->
-    <property name="dir.arduino.home" location="C:/arduino-1.5.8" />
+    <property name="dir.arduino.home" location="C:/arduino-1.0.6" />
     <property name="dir.src"          location="src" />
     <property name="dir.lib"          location="lib" />
     <property name="dir.arduinolib"   location="${basedir}/../Arduinolib" />
@@ -15,8 +15,8 @@ TODO: fix hardcoded filelists
     <property name="dir.dist"         location="dist" />
 
     <!-- TODO: remove hardcode -->
-    <!-- <property name="srclist.cpp"      value="ir_recv15.cpp readTemp.cpp" /> -->
-    <property name="srclist.cpp"      value="ir_recv15.cpp" />
+    <!-- <property name="srclist.cpp"      value="ir_recv.cpp readTemp.cpp" /> -->
+    <property name="srclist.cpp"      value="ir_recv.cpp" />
 
 
     <target name="init" depends="clean">
@@ -29,17 +29,15 @@ TODO: fix hardcoded filelists
     
     <property name="avrgcc"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="avrgpp"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-g++.exe" />
-    <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR -DDBG" />
+    <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=106 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR -DDBG" />
     <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR  -DDBG" />
 
     <!-- TODO fix this shit -->
-    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/avr/cores/arduino" />
-    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/avr/variants/standard" />
-    <!--    <property name="inc3"             location="${dir.arduinolib}/UIPEthernet/src" />
-    <property name="inc4"             location="${inc3}/utility" />
-    <property name="inc5"             location="${dir.arduino.home}/hardware/arduino/avr/libraries/SPI" />  -->
+    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
+    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
+    <property name="inc3"             location="${dir.arduino.home}/hardware/arduino/libraries/SPI" />
     <property name="inc6"             location="${dir.arduinolib}/IRremote/src" />
-    <property name="includes"         value="-I${inc1} -I${inc2} -I${inc6}" />
+    <property name="includes"         value="-I${inc1} -I${inc2} -I${inc3} -I${inc6}" />
 
     <target name="compile" depends="init" description="compile the source ">
 
@@ -56,8 +54,7 @@ TODO: fix hardcoded filelists
 
     <property name="avrgcc"       location= "${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="linkswitches" value=    "-Os -Wl,--gc-sections -mmcu=atmega328p" />
-    <property name="core.ar"      location= "C:/Users/peter/wksp-cpp-luna/libDuemilanoveCore.a" />
-    <!-- TODO fix this shit -->
+    <property name="core.ar"      location= "../libDuemilanoveCore106.a" />
     <property name="ard.lib.ar"   location= "${dir.arduinolib}/UIPEthernet.a" />
     <property name="ard.lib.ar.2" location= "${dir.arduinolib}/IRremote.a" />
     <property name="ard.lib.ar.all" value="${ard.lib.ar.2} ${core.ar}"/>
@@ -140,7 +137,7 @@ avrdude: Version 6.0.1, compiled on Apr  3 2014 at 23:12:16
 
 
 Eclipse
-C:\arduino-1.5.8\hardware\tools\avr\bin\avrdude.exe  -CC:\arduino-1.5.8\hardware\tools\avr\etc\avrdude.conf -v -v -v -v -patmega328p -carduino -PCOM17 -b57600 -D -Uflash:w:C:\Users\peter\wksp-cpp-luna\ir_recv15\dist\ir_recv15.cpp.hex:i
+C:\arduino-1.5.8\hardware\tools\avr\bin\avrdude.exe  -CC:\arduino-1.5.8\hardware\tools\avr\etc\avrdude.conf -v -v -v -v -patmega328p -carduino -PCOM17 -b57600 -D -Uflash:w:C:\Users\peter\wksp-cpp-luna\ir_recv\dist\ir_recv.cpp.hex:i
 -->
 
 

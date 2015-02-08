@@ -1,7 +1,7 @@
 <!--
 TODO: fix hardcoded file lists
 -->
-<project name="Receive_Raw" default="dist" basedir=".">
+<project name="GarageServer" default="dist" basedir=".">
 
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
     <!-- Testing cpptasks <taskdef resource="cpptasks.tasks"/> -->
@@ -16,7 +16,7 @@ TODO: fix hardcoded file lists
     <property name="dir.dist"         location="dist" />
 
     <!-- TODO: remove hardcode -->
-    <property name="srclist.cpp"      value="Receive_Raw.cpp Relay.cpp" />
+    <property name="srclist.cpp"      value="GarageServer.cpp Relay.cpp" />
 
 
 
@@ -25,18 +25,10 @@ TODO: fix hardcoded file lists
         <mkdir dir="${dir.build}" />
     </target>
 
-<!--  Testing cpptasks
-    <target name="compilecpp">
-        <cc outtype="executable" subsystem="console" outfile="${dir.build}/hello" objdir="${dir.build}">
-           <fileset dir="${dir.src}" includes="*.c"/>
-        </cc>
-    </target>
--->
-
     <property name="avrgcc"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="avrgpp"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-g++.exe" />
-    <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
-    <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
+    <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=106 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
+    <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=106 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
 
     <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
     <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
@@ -44,7 +36,8 @@ TODO: fix hardcoded file lists
     <property name="inc4"             location="${dir.arduinolib}/UIPEthernet/src" />
     <property name="inc5"             location="${inc4}/utility" />
     <property name="inc6"             location="${dir.arduinolib}/TextFinder/src" />
-    <property name="includes"         value="-I${inc1} -I${inc2} -I${inc3} -I${inc4} -I${inc5} -I${inc6}" />
+    <property name="inc7"             location="${dir.arduinolib}/IRremote/src" />
+    <property name="includes"         value="-I${inc1} -I${inc2} -I${inc3} -I${inc4} -I${inc5} -I${inc6} -I${inc7}" />
 
     <target name="compile" depends="init" description="compile the source ">
 
@@ -61,9 +54,12 @@ TODO: fix hardcoded file lists
 
     <property name="avrgcc"       location= "${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="linkswitches" value=    "-Os -Wl,--gc-sections -mmcu=atmega328p" />
-    <property name="core.ar"      location= "../libDuemilanoveCore10.a" />
+    <property name="core.ar"      location= "../libDuemilanoveCore106.a" />
     <property name="ard.lib.ar"   location= "${dir.arduinolib}/UIPEthernet.a" />
     <property name="ard.lib.ar2"  location= "${dir.arduinolib}/TextFinder.a" />
+    <property name="ard.lib.ar3" location= "${dir.arduinolib}/IRremote.a" />
+    <property name="ard.lib.ar.all" value="${ard.lib.ar} ${ard.lib.ar2} ${ard.lib.ar3} ${core.ar}"/>
+
     <property name="obj"          location= "${dir.src}/${ant.project.name}.cpp.o" />
     <property name="libaries"     value=    "-L${dir.arduinolib} -lm" />
     <property name="elf"          location= "${dir.build}/${ant.project.name}.cpp.elf" />
@@ -72,9 +68,9 @@ TODO: fix hardcoded file lists
     <property name="avrsizeoptions" value="--format=avr --mcu=atmega328p" />
 
     <target name="link" depends="compile" description="create ELF from .o's and .a's ">
-        <echo message="Linking=     ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar} ${ard.lib.ar2} ${core.ar} ${libaries}" />
+        <echo message="Linking=     ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar.all} ${libaries}" />
         <exec executable="cmd">
-            <arg value="/c ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar} ${ard.lib.ar2} ${core.ar} ${libaries}" />
+            <arg value="/c ${avrgcc} ${linkswitches} -o ${elf} ${obj} ${ard.lib.ar.all} ${libaries}" />
         </exec>
 
         <echo message="Sizing=     ${avrsize} ${avrsizeoptions} ${elf}" />

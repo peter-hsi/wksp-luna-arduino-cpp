@@ -1,4 +1,9 @@
 /*
+ * GarageServer.cpp
+ *
+ *
+ *  Created on: Sep 22, 2014
+ *      Author: Peter Hsi
  */
 
 #include <Arduino.h>
@@ -6,20 +11,19 @@
 #include <UIPEthernet.h>
 #include <TextFinder.h>
 #include "WebServer.h"
+#include "GarageServer.h"
 
 #include "Relay.h"
 
 // **** ETHERNET SETTING ****
 #include "peterethernet.h"
 /*
-const byte mac[] = { 0x74, 0x69, 0x69, 0x2D, 0x30, 0x31 };
-const IPAddress ip(192, 168, 1, 9);
-*/
+ const byte mac[] = { 0x74, 0x69, 0x69, 0x2D, 0x30, 0x31 };
+ const IPAddress ip(192, 168, 1, 9);
+ */
 char buffer[8]; // make this buffer big enough to hold requested page names
 
 EthernetServer server(80);
-
-
 
 void setup()
 {
@@ -33,13 +37,11 @@ void setup()
   Serial.println(Ethernet.localIP());
 }
 
-
 void loop()
 {
   // listen for incoming Ethernet connections:
   listenForEthernetClients();
 }
-
 
 /* ------- */
 
@@ -93,7 +95,6 @@ void listenForEthernetClients()
 
           client.println("</body></html>");
 
-
           client.stop();
         }
         break;
@@ -116,8 +117,6 @@ void sendHeader(EthernetClient client, char *title)
   client.println("</title><body>");
 }
 
-
-
 /* ------ */
 
 /* all URLs on this server will start with /buzz because of how we
@@ -134,7 +133,7 @@ WebServer webserver(PREFIX, 80);
 int buzzDelay = 0;
 
 /* toggle is used to only turn on the speaker every other loop
-iteration. */
+ iteration. */
 char toggle = 0;
 
 /* This command is set as the default command for the server.  It
@@ -160,9 +159,9 @@ void serverCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
        * named "buzz" here. */
       if (strcmp(name, "buzz") == 0)
       {
-  /* use the STRing TO Unsigned Long function to turn the string
-   * version of the delay number into our integer buzzDelay
-   * variable */
+        /* use the STRing TO Unsigned Long function to turn the string
+         * version of the delay number into our integer buzzDelay
+         * variable */
         buzzDelay = strtoul(value, NULL, 10);
       }
     } while (repeat);
@@ -181,24 +180,24 @@ void serverCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   {
     /* store the HTML in program memory using the P macro */
     P(message) =
-"<!DOCTYPE html><html><head>"
-  "<title>Webduino AJAX Buzzer Example</title>"
-  "<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css' rel=stylesheet />"
-  //"<meta http-equiv='Content-Script-Type' content='text/javascript'>"
-  "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>"
-  "<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js'></script>"
-  "<style> #slider { margin: 10px; } </style>"
-  "<script>"
+    "<!DOCTYPE html><html><head>"
+    "<title>Webduino AJAX Buzzer Example</title>"
+    "<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css' rel=stylesheet />"
+    //"<meta http-equiv='Content-Script-Type' content='text/javascript'>"
+    "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>"
+    "<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js'></script>"
+    "<style> #slider { margin: 10px; } </style>"
+    "<script>"
     "function changeBuzz(event, ui) { $('#indicator').text(ui.value); $.post('/buzz', { buzz: ui.value } ); }"
     "$(document).ready(function(){ $('#slider').slider({min: 0, max:8000, change:changeBuzz}); });"
-  "</script>"
-"</head>"
-"<body style='font-size:62.5%;'>"
-  "<h1>Test the Buzzer!</h1>"
-  "<div id=slider></div>"
-  "<p id=indicator>0</p>"
-"</body>"
-"</html>";
+    "</script>"
+    "</head>"
+    "<body style='font-size:62.5%;'>"
+    "<h1>Test the Buzzer!</h1>"
+    "<div id=slider></div>"
+    "<p id=indicator>0</p>"
+    "</body>"
+    "</html>";
 
     server.printP(message);
   }

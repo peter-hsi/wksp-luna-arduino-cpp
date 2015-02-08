@@ -24,7 +24,7 @@ class Passkey
 
   private:
     int masterkey;
-    int nKS = 0;
+    int nKS;
 
 };
 

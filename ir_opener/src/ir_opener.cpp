@@ -5,8 +5,8 @@
  *      Author: peter
  *
  * API:
- *  Arduino 1.5.x
- *  IRremote .11
+ *  Arduino 1.0.x
+ *  IRLremote
  *
  *  TODO
  *  - add timeout period to open a closed door without having to re-enter the masterkey
