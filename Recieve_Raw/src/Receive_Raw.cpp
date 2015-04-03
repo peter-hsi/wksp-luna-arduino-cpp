@@ -9,6 +9,7 @@
 
  MOD HISTORY:
  1/2015 - Peter Hsi, modified from original Receive_Raw.ino
+ https://github.com/NicoHood/IRLremote
  */
 
 #include "IRLremote.h"

@@ -11,8 +11,8 @@ TODO: fix hardcoded file lists
 
     <property name="dir.arduino.home"     location="C:/arduino-1.0.6" />
     <property name="dir.src"              location="src" />
-    <property name="dir.arduinolib"       location= "${basedir}/../rel/lib" />
-    <property name="dir.arduinoinclude"   location= "${basedir}/../rel/include" />
+    <property name="dir.arduinolib"       location= "${basedir}/../lib" />
+    <property name="dir.arduinoinclude"   location= "${basedir}/../include" />
 
     <!-- TODO: remove hardcode -->
     <property name="list.ardlib.c"    value="" />
@@ -31,8 +31,8 @@ TODO: fix hardcoded file lists
 
     <property name="avrgcc"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="avrgpp"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-g++.exe" />
-    <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=106 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
-    <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=106 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
+    <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=${arduino.ide} -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
+    <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=${arduino.ide} -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
 
     <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
     <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
@@ -69,29 +69,31 @@ TODO: fix hardcoded file lists
     <property name="ar-switches"  value=    "rcs" />
 
     <property name="objlist"      value=    "${dir.src}/${ant.project.name}.cpp.o" />
-    <property name="lib.a"        location= "${dir.arduinolib}/${ant.project.name}.a" />
-    <property name="obj"          value=    "${basedir}/${ant.project.name}.cpp.o  ${objlist}  ${lib.a}" />
+    <property name="lib.a"        value=    "${ant.project.name}.a" />
+	<property name="dir.lib.a"   location=  "${lib.a}" />
+	<property name="obj"          value=    "${basedir}/${ant.project.name}.cpp.o  ${objlist}  ${dir.lib.a}" />
 
 
     <target name="ar" depends="compile" description="create ELF from .o, core.a">
 
         <for list="${list.ardlib.c}"  param="fnc" delimiter=" ">
             <sequential>
-                <echo message="Linking =@{fnc}=     ${avr-ar} ${ar-switches} ${lib.a} ${dir.src}/@{fnc}.o" />
+                <echo message="Linking =@{fnc}=     ${avr-ar} ${ar-switches} ${path.lib.a} ${dir.src}/@{fnc}.o" />
                 <exec executable="cmd">
-                    <arg value="/c ${avr-ar} ${ar-switches} ${lib.a} ${dir.src}/@{fnc}.o" />
+                    <arg value="/c ${avr-ar} ${ar-switches} ${path.lib.a} ${dir.src}/@{fnc}.o" />
                 </exec>
             </sequential>
         </for>
 
         <for list="${list.ardlib.cpp}"  param="fncpp" delimiter=" ">
             <sequential>
-                <echo message="Linking =@{fncpp}=     ${avr-ar} ${ar-switches} ${lib.a} ${dir.src}/@{fncpp}.o" />
+                <echo message="Linking =@{fncpp}=     ${avr-ar} ${ar-switches} ${dir.lib.a} ${dir.src}/@{fncpp}.o" />
                 <exec executable="cmd">
-                    <arg value="/c ${avr-ar} ${ar-switches} ${lib.a} ${dir.src}/@{fncpp}.o" />
+                    <arg value="/c ${avr-ar} ${ar-switches} ${dir.lib.a} ${dir.src}/@{fncpp}.o" />
                 </exec>
             </sequential>
         </for>
+    	<move file="${dir.lib.a}" tofile="${dir.arduinolib}/${lib.a}"/>
 
 
     </target>
