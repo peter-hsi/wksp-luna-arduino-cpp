@@ -28,11 +28,13 @@ uint8_t count = 0;
 
 void setup() {
   // start serial debug output
-  Serial.begin(115200);
-  Serial.println("Startup");
+  Serial.begin(57600); //Serial.begin(115200);
+  Serial.print("Startup=");
 
   // set protocol to user to use the decode function below
-  IRLbegin<IR_USER>(pinReceiveIR);
+  IRLbegin<IR_USER>(pinReceiveIR);			//IRLbegin<IR_USER>(pinReceiveIR);
+
+  Serial.println(IR_ALL, DEC);
 }
 
 void loop() {

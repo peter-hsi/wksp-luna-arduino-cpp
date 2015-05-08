@@ -18,8 +18,8 @@ decode_results results;
 
 void setup()
 {
-  Serial.begin(9600);
-  Serial.println("setup...");
+  Serial.begin(57600);
+  Serial.println("setup - ir_recv");
   irrecv.enableIRIn(); // Start the receiver
 }
 

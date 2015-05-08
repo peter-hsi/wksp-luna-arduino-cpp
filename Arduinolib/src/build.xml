@@ -7,22 +7,6 @@
     <!-- set global properties for this build -->
 
     <property name="dir.arduino.home" location  ="C:/arduino-1.0.6" />
-
-    <property name="avrgcc"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
-    <property name="avrgpp"           location="${dir.arduino.home}/hardware/tools/avr/bin/avr-g++.exe" />
-    <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
-    <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=158 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
-
-    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
-    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
-    <property name="inc3"             location="${dir.arduino.home}/hardware/tools/avr/avr/include" />
-    <property name="include.core"     value   ="-I${inc1} -I${inc2} -I${inc3}" />
-
-    <property name="avr-ar"       location= "${dir.arduino.home}/hardware/tools/avr/bin/avr-ar.exe" />
-    <property name="ar-switches"  value=    "rcs" />
-
-
-
     
 
     <target name="init" depends="clean">

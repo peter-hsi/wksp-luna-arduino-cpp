@@ -1,7 +1,7 @@
 <!--
 TODO: fix hardcoded file lists
 -->
-<project name="ir_recv" default="dist" basedir=".">
+<project name="Receive_Custom" default="dist" basedir=".">
 
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
     <property file="../Arduinolib/Arduinolib.properties" />
@@ -31,10 +31,10 @@ TODO: fix hardcoded file lists
     <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=${arduino.ide} -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
     <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=${arduino.ide} -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
 
-    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/avr/cores/arduino" />
-    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/avr/variants/standard" />
+    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
+    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
     <property name="inc3"             location="${dir.arduino.home}/hardware/tools/avr/avr/include" />
-    <property name="inc4"             location="${dir.arduinolib}/../IRremote/src" />
+    <property name="inc4"             location="${dir.arduinolib}/../IRLremote/src" />
     <property name="includes"         value=   "-I${dir.src} -I${inc1} -I${inc2} -I${inc3} -I${inc4}" />
 
     <target name="compile" depends="init" description="compile the source ">
@@ -52,7 +52,7 @@ TODO: fix hardcoded file lists
     <property name="avrgcc"       location  ="${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="linkswitches" value     ="-Os -Wl,--gc-sections -mmcu=atmega328p" />
     <property name="core.ar"      location  ="${dir.arduinolib}/libDuemilanoveCore106.a" />
-    <property name="ard.lib.ar"   location  ="${dir.arduinolib}/IRremote.a" />
+    <property name="ard.lib.ar"   location  ="${dir.arduinolib}/IRLremote.a" />
 
     <property name="obj"          location  ="${dir.src}/${ant.project.name}.cpp.o" />
     <property name="libaries"     value     ="-L${dir.arduinolib} -lm" />
