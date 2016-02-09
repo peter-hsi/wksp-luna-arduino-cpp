@@ -5,8 +5,7 @@ TODO: fix hardcoded file lists
 
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
     <!-- Testing cpptasks <taskdef resource="cpptasks.tasks"/> -->
-    <!-- <property file="${ant.project.name}.properties" /> -->
-    <property file="../Arduinolib/src/Arduinolib.properties" />
+    <property file="${ant.project.name}.properties" />
 
     <!-- set global properties for this build -->
     <property name="dir.arduino.home" location="C:/arduino-1.0.6" />
@@ -31,13 +30,13 @@ TODO: fix hardcoded file lists
     <property name="gcc_switches"     value="-c -g -Os -w -ffunction-sections -fdata-sections -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=106 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
     <property name="gppswitches"      value="-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=106 -DARDUINO_AVR_DUEMILANOVE -DARDUINO_ARCH_AVR" />
 
-    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/avr/cores/arduino" />
-    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/avr/variants/standard" />
-    <property name="inc3"             location="${dir.arduino.home}/hardware/arduino/avr/libraries/SPI" />
-    <property name="inc4"             location="${dir.arduinolib}/src/UIPEthernet" />
+    <property name="inc1"             location="${dir.arduino.home}/hardware/arduino/cores/arduino" />
+    <property name="inc2"             location="${dir.arduino.home}/hardware/arduino/variants/standard" />
+    <property name="inc3"             location="${dir.arduino.home}/hardware/arduino/libraries/SPI" />
+    <property name="inc4"             location="${dir.arduinolib}/UIPEthernet/src" />
     <property name="inc5"             location="${inc4}/utility" />
-    <property name="inc6"             location="${dir.arduinolib}/src/TextFinder" />
-    <property name="inc7"             location="${dir.arduinolib}/src/IRremote" />
+    <property name="inc6"             location="${dir.arduinolib}/TextFinder/src" />
+    <property name="inc7"             location="${dir.arduinolib}/IRremote/src" />
     <property name="includes"         value="-I${inc1} -I${inc2} -I${inc3} -I${inc4} -I${inc5} -I${inc6} -I${inc7}" />
 
     <target name="compile" depends="init" description="compile the source ">
@@ -55,10 +54,10 @@ TODO: fix hardcoded file lists
 
     <property name="avrgcc"       location= "${dir.arduino.home}/hardware/tools/avr/bin/avr-gcc.exe" />
     <property name="linkswitches" value=    "-Os -Wl,--gc-sections -mmcu=atmega328p" />
-    <property name="core.ar"      location= "${dir.arduinolib}/lib/libDuemilanoveCore106.a" />
-    <property name="ard.lib.ar"   location= "${dir.arduinolib}/lib/UIPEthernet.a" />
-    <property name="ard.lib.ar2"  location= "${dir.arduinolib}/lib/TextFinder.a" />
-    <property name="ard.lib.ar3" location= "${dir.arduinolib}/lib/IRremote.a" />
+    <property name="core.ar"      location= "../libDuemilanoveCore106.a" />
+    <property name="ard.lib.ar"   location= "${dir.arduinolib}/UIPEthernet.a" />
+    <property name="ard.lib.ar2"  location= "${dir.arduinolib}/TextFinder.a" />
+    <property name="ard.lib.ar3" location= "${dir.arduinolib}/IRremote.a" />
     <property name="ard.lib.ar.all" value="${ard.lib.ar} ${ard.lib.ar2} ${ard.lib.ar3} ${core.ar}"/>
 
     <property name="obj"          location= "${dir.src}/${ant.project.name}.cpp.o" />
