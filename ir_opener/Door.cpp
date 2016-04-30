@@ -4,9 +4,9 @@
  *  Created on: Oct 11, 2014
  *      Author: peter
  */
-#include <Arduino.h>
 #include "Door.h"
 
+#define DB
 
 Door::Door(int p1, int p2, int p3, long x)
 {
@@ -40,47 +40,43 @@ bool Door::isOpen()
 
 void Door::momentaryOn()
 {
-  long last = millis();
+  unsigned long last = millis();
   digitalWrite(relayPin, HIGH);
   while ( millis()-last <  relayWait )
   {}
   digitalWrite(relayPin, LOW);
 }
 
-void Door::set_prevOpen(long p)
+void Door::set_prevOpen(unsigned long p)
 {
   prevOpen = p;
 }
 
-long Door::get_prevOpen()
+unsigned long Door::get_prevOpen()
 {
     return prevOpen;
 }
 
 
-bool Door::timeExpired()
+bool Door::timeExpired(unsigned long now)
 {
-  long c = millis();
-
   #ifdef DB
   Serial.print ("Timeout=");
   Serial.print (reopenTimeout);
   Serial.print ("=  p=");
   Serial.print (prevOpen);
-  Serial.print ("=  c=");
-  Serial.print (c);
+  Serial.print ("=  now=");
+  Serial.println (now);
   #endif
 
-  if (c-prevOpen < reopenTimeout)
+  if (now-prevOpen < reopenTimeout)
   {
-    Serial.println ("=  not expired");
-    prevOpen = c;
+    prevOpen = now;
     return false;
   }
   else
   {
-    Serial.println ("=  expired");
-    prevOpen = c;
+    prevOpen = now;
     return true;  // expired
   }
 }

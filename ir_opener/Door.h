@@ -8,6 +8,8 @@
 #ifndef DOOR_H_
 #define DOOR_H_
 
+#include <Arduino.h>
+
 class Door
 {
   public:
@@ -16,9 +18,9 @@ class Door
 
     bool isOpen();
     void momentaryOn();
-    void set_prevOpen(long p);
-    long get_prevOpen();
-    bool timeExpired();
+    void set_prevOpen(unsigned long p);
+    unsigned long get_prevOpen();
+    bool timeExpired(unsigned long now);
     void set_isLock(bool b);
     bool get_isLock();
 
@@ -26,9 +28,9 @@ class Door
     int openSensePin;
     int irRecvPin;
     int relayPin;
-    long relayWait;
-    long reopenTimeout;
-    long prevOpen;
+    unsigned long relayWait;
+    unsigned long reopenTimeout;
+    unsigned long prevOpen;
     bool isLock;
 };
 
