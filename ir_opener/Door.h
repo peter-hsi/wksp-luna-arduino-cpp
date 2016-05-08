@@ -13,25 +13,16 @@
 class Door
 {
   public:
-    Door(int p1, int p2, int p3, long reopen);
-    virtual ~Door();
+    Door(int p1, int p2, int p3, unsigned long t);
 
     bool isOpen();
     void momentaryOn();
-    void set_prevOpen(unsigned long p);
-    unsigned long get_prevOpen();
-    bool timeExpired(unsigned long now);
-    void set_isLock(bool b);
-    bool get_isLock();
 
   private:
-    int openSensePin;
-    int irRecvPin;
-    int relayPin;
-    unsigned long relayWait;
-    unsigned long reopenTimeout;
-    unsigned long prevOpen;
-    bool isLock;
+    int           openSensePin;   //digital pin
+    int           irRecvPin;      //analog pin
+    int           relayPin;       //digital pin
+    unsigned long relayMomMs;     // relay momentary-on, milliseconds
 };
 
 #endif /* DOOR_H_ */
