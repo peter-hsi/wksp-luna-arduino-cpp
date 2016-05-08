@@ -1,0 +1,60 @@
+<project name="Arduinolib" default="all" basedir=".">
+
+  <taskdef resource="net/sf/antcontrib/antlib.xml" />
+  <property file="${ant.project.name}.properties" />
+
+	<property name="dir.src"     		location="${basedir}/src" />
+	<property name="dir.arduinolib" location="${basedir}/lib" />
+	<property name="dir.include" 		location="${basedir}/inc" />
+	<property name="dir.build"   		location="${basedir}/build" />
+	<property name="dir.dist"    		location="${basedir}/dist" />
+
+	
+  <target name="init">
+  	<mkdir dir="${dir.arduinolib}" />
+  	<mkdir dir="${dir.lib}" />
+  	<mkdir dir="${dir.include}" />
+  	<mkdir dir="${dir.build}" />
+  	<mkdir dir="${dir.dist}" />
+  </target>
+
+
+	
+    <property name="lib.list"  value="IRLremote TextFinder UIPEthernet EEPROM" />
+
+    <target name="all" depends="init">
+        <for list="${lib.list}"  param="lsrc" delimiter=" ">
+            <sequential>
+                <echo message="Building @{lsrc}..."/>
+                <!-- -->
+            </sequential>
+        </for>
+    </target>
+
+
+
+    <target name="clean" description="clean up">
+	    <echo message="clean   project=${ant.project.name}" />
+	    <delete includeemptydirs="true" failonerror="false">
+		    <fileset dir="${dir.src}" includes="**/*.o"/>
+		    <fileset dir="${dir.src}" includes="**/*.d"/>
+		    <fileset dir="${basedir}" includes="**/${lib.a}"/>
+				<!--
+		  	<fileset dir="dir.lib"  includes="**/"/>
+		  	<fileset dir="dir.include" />
+		  	<fileset dir="dir.build" />
+		  	<fileset dir="dir.dist" /> 
+		  	-->
+      </delete>
+    </target>
+
+
+    <target name="clean-all" depends="clean" description="clean up">
+        <echo message="clean-all   project=${ant.project.name}" />
+
+    </target>
+
+
+    <echoproperties />
+
+</project>

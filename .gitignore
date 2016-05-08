@@ -1,0 +1,48 @@
+# misc files and dirs
+*.log
+temp-*
+*~
+*.bak
+*.lock
+.metadata/
+tmp/
+Release/
+Debug/
+
+
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+*.iws
+target
+out/
+.idea
+*.iml
+
+# Gradle
+build/
+.gradle
+
+# OS X
+.DS_Store
+/gradle-app.setting
+.git

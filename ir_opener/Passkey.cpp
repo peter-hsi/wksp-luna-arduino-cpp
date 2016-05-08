@@ -13,8 +13,6 @@ Passkey::Passkey(int mk)
   nKS = 0;
 }
 
-Passkey::~Passkey()
-{}
 
 /*******************/
 int Passkey::increment_nKS()
