@@ -1,3 +1,3 @@
 # wksp-luna-arduino-cpp
-Workspace for Arduino experiements
+Arduino and ESP8266 experiements
 
