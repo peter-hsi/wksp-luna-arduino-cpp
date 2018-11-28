@@ -1,3 +1,3 @@
 # wksp-luna-arduino-cpp
-Arduino and ESP8266 experiements
+My Arduino and ESP8266 experiements.
 
